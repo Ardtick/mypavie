@@ -316,16 +316,10 @@ export default function LoveQuestionnaire() {
                     </h1>
                   </div>
 
-                  <div className="mb-6">
-                    <p className="text-gray-600 text-sm mb-4">
-                      Klik icon ❤️ di ujung bawah untuk melanjutkan
-                    </p>
-                  </div>
-
                   <div className="flex justify-center gap-6">
                     <Button
-                      disabled
-                      className="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-8 py-3 rounded-full shadow-lg font-medium flex items-center gap-2 opacity-50 cursor-not-allowed"
+                      onClick={() => setStep(4)}
+                      className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white px-8 py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 font-medium flex items-center gap-2"
                       data-testid="button-yes"
                     >
                       <Heart className="w-4 h-4" />
@@ -409,14 +403,11 @@ export default function LoveQuestionnaire() {
                     </div>
                   </div>
 
-                  <Button
-                    onClick={() => setShowEnding(true)}
-                    className="flex items-center justify-center gap-3 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-8 py-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 font-medium mx-auto"
-                    data-testid="button-show-ending"
-                  >
-                    <Heart className="w-6 h-6" />
-                    Klik ini sayang ❤️
-                  </Button>
+                  <div className="mb-4">
+                    <p className="text-gray-600 text-sm">
+                      Klik icon ❤️ di ujung bawah untuk melihat kejutan
+                    </p>
+                  </div>
                 </div>
               )}
 
@@ -485,16 +476,16 @@ export default function LoveQuestionnaire() {
           Made with{" "}
           <motion.span
             className={`inline-block cursor-pointer transition-all duration-300 ${
-              (step === 3 || step === 4) 
+              (step === 4 || step === 5) 
                 ? "text-red-400 text-lg animate-pulse hover:scale-125 hover:text-red-300" 
                 : "text-white/80"
             }`}
             onClick={() => {
-              if (step === 3) setStep(4);
-              else if (step === 4) setStep(5);
+              if (step === 4) setStep(5);
+              else if (step === 5) setShowEnding(true);
             }}
-            whileHover={(step === 3 || step === 4) ? { scale: 1.3 } : {}}
-            whileTap={(step === 3 || step === 4) ? { scale: 1.1 } : {}}
+            whileHover={(step === 4 || step === 5) ? { scale: 1.3 } : {}}
+            whileTap={(step === 4 || step === 5) ? { scale: 1.1 } : {}}
             data-testid="heart-footer"
           >
             ❤️
