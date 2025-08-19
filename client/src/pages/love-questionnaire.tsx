@@ -209,209 +209,277 @@ export default function LoveQuestionnaire() {
             transition={{ type: "spring", stiffness: 150, damping: 12 }}
             className="p-3 rounded-2xl bg-white/10 backdrop-blur"
           >
-  );
+            <Heart className="text-3xl text-white drop-shadow-lg" />
+          </motion.div>
+          <h1 className="text-3xl sm:text-4xl font-bold text-white drop-shadow-lg">
+            Love Calculator
+          </h1>
+        </div>
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-rose-100 to-pink-200 text-gray-800 p-4 relative overflow-hidden">
-      <BackgroundHearts />
-
-      <div className="max-w-md w-full bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8 text-center relative z-10">
-        {step === 1 && (
-          <div>
-            <div className="mb-6">
-              <FaHeart className="text-pink-500 text-4xl mb-4 mx-auto" />
-              <h1 className="text-2xl font-semibold text-gray-800 mb-2">
-                Sp nmamu?
-              </h1>
-              <p className="text-gray-600 text-sm">msukan dngn bnar</p>
-            </div>
-
-            <form onSubmit={handleNameSubmit}>
-              <div className="mb-4">
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Ketik namamu di sini..."
-                  className="w-full border-2 border-pink-200 focus:border-pink-400 focus:outline-none p-3 rounded-xl mb-3 text-center font-medium transition-all duration-300 hover:border-pink-300"
-                />
-                {error && <p className="text-red-500 text-sm">{error}</p>}
-              </div>
-
-              <button
-                type="submit"
-                className="bg-gradient-to-r from-pink-400 to-rose-400 text-white px-8 py-3 rounded-full shadow-lg hover:from-pink-500 hover:to-rose-500 transition-all duration-300 transform hover:scale-105 font-medium"
-              >
-                Neks ➝
-              </button>
-            </form>
+        {/* Progress bar subtle */}
+        <div className="mb-8">
+          <div className="h-1 w-full bg-white/20 rounded-full overflow-hidden">
+            <motion.div
+              className="h-full bg-white"
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.5 }}
+            />
           </div>
-        )}
-
-        {step === 2 && (
-          <div>
-            <div className="mb-6">
-              <div className="text-4xl mb-4">😍</div>
-              <h1 className="text-2xl font-semibold text-gray-800 mb-2">
-                {name} pacalna siapa nii?
-              </h1>
-              <p className="text-gray-600 text-sm">
-                sebutkan nama si tamvan n pemberani itu ✨
-              </p>
-            </div>
-
-            <form onSubmit={handlePartnerSubmit}>
-              <div className="mb-4">
-                <input
-                  type="text"
-                  value={partner}
-                  onChange={(e) => setPartner(e.target.value)}
-                  placeholder="Nama pacarmu..."
-                  className="w-full border-2 border-pink-200 focus:border-pink-400 focus:outline-none p-3 rounded-xl mb-3 text-center font-medium transition-all duration-300 hover:border-pink-300"
-                />
-                {error && <p className="text-red-500 text-sm">{error}</p>}
-              </div>
-
-              <button
-                type="submit"
-                className="bg-gradient-to-r from-pink-400 to-rose-400 text-white px-8 py-3 rounded-full shadow-lg hover:from-pink-500 hover:to-rose-500 transition-all duration-300 transform hover:scale-105 font-medium"
-              >
-                Next ➝
-              </button>
-            </form>
+          <div className="text-center text-white/80 text-sm mt-2">
+            Progress: {progress}%
           </div>
-        )}
+        </div>
 
-        {step === 3 && (
-          <div>
-            <div className="mb-8">
-              <div className="text-4xl mb-4">❓</div>
-              <h1 className="text-2xl font-semibold text-gray-800 mb-4">
-                {name} sayang {partner} gak?
-              </h1>
-            </div>
+        {/* Konten */}
+        <Card className="bg-white/95 backdrop-blur border-0 shadow-2xl">
+          <CardContent className="p-8 text-center text-gray-800">
+            <StepWrapper keyName={`step-${step}`}>
+              {step === 1 && (
+                <div>
+                  <div className="mb-6">
+                    <Heart className="text-pink-500 text-4xl mb-4 mx-auto" />
+                    <h1 className="text-2xl font-semibold text-gray-800 mb-2">
+                      Sp nmamu?
+                    </h1>
+                    <p className="text-gray-600 text-sm">msukan dngn bnar</p>
+                  </div>
 
-            <div className="flex justify-center gap-6">
-              <button
-                onClick={() => setStep(4)}
-                className="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-8 py-3 rounded-full shadow-lg hover:from-pink-600 hover:to-rose-600 transition-all duration-300 transform hover:scale-105 font-medium flex items-center gap-2"
-              >
-                <FaHeart />
-                YA 💖
-              </button>
-              
-              <motion.div
-                style={{ translateX: noPos.x, translateY: noPos.y }}
-                transition={{ type: "spring", stiffness: 200, damping: 12 }}
-              >
-                <button
-                  className="bg-gray-300 text-gray-700 px-8 py-3 rounded-full shadow-lg hover:bg-gray-400 transition-all duration-300 transform hover:scale-105 font-medium"
-                  onMouseEnter={dodge}
-                  onTouchStart={dodge}
-                  onClick={dodge}
-                >
-                  TIDAK 🙈
-                </button>
-              </motion.div>
-            </div>
-            {noMoves > 0 && (
-              <p className="text-gray-600 text-sm mt-4">
-                Hehe… tombol "Tidak" suka malu-malu kucing 😆
-              </p>
-            )}
-          </div>
-        )}
+                  <form onSubmit={handleNameSubmit}>
+                    <div className="mb-4">
+                      <Input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Ketik namamu di sini..."
+                        className="text-center border-2 border-pink-200 focus:border-pink-400 p-3 rounded-xl mb-3 font-medium transition-all duration-300 hover:border-pink-300"
+                        data-testid="input-name"
+                      />
+                      {error && <p className="text-red-500 text-sm" data-testid="text-error">{error}</p>}
+                    </div>
 
-        {step === 4 && (
-          <div>
-            <div className="mb-8">
-              <div className="text-4xl mb-4">💓</div>
-              <h1 className="text-2xl font-semibold text-gray-800 mb-6">
-                Seberapa sayang {name} sama {partner}?
-              </h1>
-            </div>
-
-            <div className="mb-8">
-              <div className="relative mb-4">
-                <input
-                  type="range"
-                  min="1"
-                  max="100"
-                  value={loveValue}
-                  onChange={(e) => setLoveValue(parseInt(e.target.value))}
-                  className="w-full h-3 bg-pink-200 rounded-lg appearance-none cursor-pointer"
-                />
-              </div>
-
-              <div className="text-center">
-                <span className="text-4xl font-bold text-pink-500">
-                  {loveValue}
-                </span>
-                <span className="text-2xl text-pink-400">%</span>
-                <div className="mt-2 text-gray-600">
-                  <span>{getLoveMessage(loveValue)}</span>
+                    <Button
+                      type="submit"
+                      className="bg-gradient-to-r from-pink-400 to-rose-400 hover:from-pink-500 hover:to-rose-500 text-white px-8 py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 font-medium"
+                      data-testid="button-submit-name"
+                    >
+                      Neks ➝
+                    </Button>
+                  </form>
                 </div>
-              </div>
-            </div>
+              )}
 
-            <button
-              onClick={() => setStep(5)}
-              className="bg-gradient-to-r from-pink-400 to-rose-400 text-white px-8 py-3 rounded-full shadow-lg hover:from-pink-500 hover:to-rose-500 transition-all duration-300 transform hover:scale-105 font-medium"
+              {step === 2 && (
+                <div>
+                  <div className="mb-6">
+                    <div className="text-4xl mb-4">😍</div>
+                    <h1 className="text-2xl font-semibold text-gray-800 mb-2">
+                      {name} pacalna siapa nii?
+                    </h1>
+                    <p className="text-gray-600 text-sm">
+                      sebutkan nama si tamvan n pemberani itu ✨
+                    </p>
+                  </div>
+
+                  <form onSubmit={handlePartnerSubmit}>
+                    <div className="mb-4">
+                      <Input
+                        type="text"
+                        value={partner}
+                        onChange={(e) => setPartner(e.target.value)}
+                        placeholder="Nama pacarmu..."
+                        className="text-center border-2 border-pink-200 focus:border-pink-400 p-3 rounded-xl mb-3 font-medium transition-all duration-300 hover:border-pink-300"
+                        data-testid="input-partner"
+                      />
+                      {error && <p className="text-red-500 text-sm" data-testid="text-error">{error}</p>}
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="bg-gradient-to-r from-pink-400 to-rose-400 hover:from-pink-500 hover:to-rose-500 text-white px-8 py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 font-medium"
+                      data-testid="button-submit-partner"
+                    >
+                      Next ➝
+                    </Button>
+                  </form>
+                </div>
+              )}
+
+              {step === 3 && (
+                <div>
+                  <div className="mb-8">
+                    <div className="text-4xl mb-4">❓</div>
+                    <h1 className="text-2xl font-semibold text-gray-800 mb-4">
+                      {name} sayang {partner} gak?
+                    </h1>
+                  </div>
+
+                  <div className="flex justify-center gap-6">
+                    <Button
+                      onClick={() => setStep(4)}
+                      className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white px-8 py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 font-medium flex items-center gap-2"
+                      data-testid="button-yes"
+                    >
+                      <Heart className="w-4 h-4" />
+                      YA 💖
+                    </Button>
+                    
+                    <motion.div
+                      style={{ translateX: noPos.x, translateY: noPos.y }}
+                      transition={{ type: "spring", stiffness: 200, damping: 12 }}
+                    >
+                      <Button
+                        variant="secondary"
+                        className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-8 py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 font-medium"
+                        onMouseEnter={dodge}
+                        onTouchStart={dodge}
+                        onClick={dodge}
+                        data-testid="button-no"
+                      >
+                        TIDAK 🙈
+                      </Button>
+                    </motion.div>
+                  </div>
+                  {noMoves > 0 && (
+                    <p className="text-gray-600 text-sm mt-4" data-testid="text-dodge-hint">
+                      Hehe… tombol "Tidak" suka malu-malu kucing 😆
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {step === 4 && (
+                <div>
+                  <div className="mb-8">
+                    <div className="text-4xl mb-4">💓</div>
+                    <h1 className="text-2xl font-semibold text-gray-800 mb-6">
+                      Seberapa sayang {name} sama {partner}?
+                    </h1>
+                  </div>
+
+                  <div className="mb-8">
+                    <div className="relative mb-4">
+                      <Slider
+                        value={[loveValue]}
+                        onValueChange={(value) => setLoveValue(value[0])}
+                        min={1}
+                        max={100}
+                        step={1}
+                        className="w-full"
+                        data-testid="slider-love"
+                      />
+                    </div>
+
+                    <div className="text-center">
+                      <span className="text-4xl font-bold text-pink-500" data-testid="text-love-value">
+                        {loveValue}
+                      </span>
+                      <span className="text-2xl text-pink-400">%</span>
+                      <div className="mt-2 text-gray-600" data-testid="text-love-message">
+                        <span>{getLoveMessage(loveValue)}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={() => setStep(5)}
+                    className="bg-gradient-to-r from-pink-400 to-rose-400 hover:from-pink-500 hover:to-rose-500 text-white px-8 py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 font-medium"
+                    data-testid="button-submit-love"
+                  >
+                    Submit ✨
+                  </Button>
+                </div>
+              )}
+
+              {step === 5 && !showEnding && (
+                <div>
+                  <div className="mb-8">
+                    <div className="text-6xl mb-4">💕</div>
+                    <h1 className="text-xl font-semibold text-gray-800 mb-6 leading-relaxed">
+                      aku lebih sayang kamu disetiap helaan napasku🧎🏻‍♂️
+                    </h1>
+                    <div className="text-gray-600 text-sm mb-4">
+                      Kamu adalah segalanya untukku... ✨
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={() => setShowEnding(true)}
+                    className="flex items-center justify-center gap-3 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-8 py-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 font-medium mx-auto"
+                    data-testid="button-show-ending"
+                  >
+                    <Heart className="w-6 h-6" />
+                    Klik ini sayang ❤️
+                  </Button>
+                </div>
+              )}
+
+              {showEnding && (
+                <div className="relative">
+                  <Petals />
+                  <div className="mb-6">
+                    <h1 className="text-3xl font-bold text-gray-800 mb-6 leading-tight" data-testid="text-anniversary">
+                      Happy 10th Month Sayang 🤍
+                    </h1>
+
+                    <img
+                      src="https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600"
+                      alt="Romantic anniversary celebration"
+                      className="rounded-2xl shadow-lg mx-auto mb-6 w-full max-w-sm"
+                      data-testid="img-anniversary"
+                    />
+
+                    <div className="text-gray-600 text-lg mb-4" data-testid="text-thank-you">
+                      Terima kasih sudah menjadi bagian terbaik dalam hidupku 💕
+                    </div>
+                  </div>
+                </div>
+              )}
+            </StepWrapper>
+          </CardContent>
+        </Card>
+
+        {/* Music controls */}
+        {music && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-6 flex justify-center"
+          >
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                if (music.paused) {
+                  music.play();
+                } else {
+                  music.pause();
+                }
+              }}
+              className="bg-white/20 border-white/30 text-white hover:bg-white/30"
+              data-testid="button-music-toggle"
             >
-              Submit ✨
-            </button>
-          </div>
+              {music.paused ? (
+                <>
+                  <PlayCircle className="w-4 h-4 mr-2" />
+                  Play Music
+                </>
+              ) : (
+                <>
+                  <PauseCircle className="w-4 h-4 mr-2" />
+                  Pause Music
+                </>
+              )}
+            </Button>
+          </motion.div>
         )}
 
-        {step === 5 && (
-          <div>
-            <div className="mb-8">
-              <div className="text-6xl mb-4">💕</div>
-              <h1 className="text-xl font-semibold text-gray-800 mb-6 leading-relaxed">
-                aku lebih sayang kamu disetiap helaan napasku🧎🏻‍♂️
-              </h1>
-              <div className="text-gray-600 text-sm mb-4">
-                Kamu adalah segalanya untukku... ✨
-              </div>
-            </div>
-
-            <button
-              onClick={() => setShowEnding(true)}
-              className="flex items-center justify-center gap-3 bg-gradient-to-r from-red-500 to-pink-500 text-white px-8 py-4 rounded-full shadow-lg hover:from-red-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 font-medium mx-auto"
-            >
-              <FaHeart className="text-2xl" />
-              Klik ini sayang ❤️
-            </button>
-          </div>
-        )}
-
-        {showEnding && (
-          <div className="relative">
-            <div className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-800 mb-6 leading-tight">
-                Happy 10th Month Sayang 🤍
-              </h1>
-
-              <img
-                src="https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600"
-                alt="Romantic anniversary celebration"
-                className="rounded-2xl shadow-lg mx-auto mb-6 w-full max-w-sm"
-              />
-
-              <div className="text-gray-600 text-lg mb-4">
-                Terima kasih sudah menjadi bagian terbaik dalam hidupku 💕
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Footer mini */}
+        <div className="mt-6 text-center text-xs text-white/80">Made with ❤️</div>
       </div>
-
-      {/* Footer mini */}
-      <div className="mt-6 text-center text-xs text-white/80">Made with ❤️ </div>
-   
-    
+      
       {/* Background subtle patterns */}
-      <div className="absolute inset-0 -z-10 opacity-30 mix-blend-overlay" aria-hidden>
+      <div className="absolute inset-0 -z-10 opacity-30 mix-blend-overlay" aria-hidden="true">
         <svg xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
           <defs>
             <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
