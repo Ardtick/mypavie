@@ -98,8 +98,6 @@ export default function LoveQuestionnaire() {
     "gienka",
     "irish",
     "jolene",
-    "pavie",
-    "pavi"
   ];
 
   const validPartners = [
@@ -186,7 +184,7 @@ export default function LoveQuestionnaire() {
             delay: Math.random() * 5,
           }}
         >
-          {Math.random() > 0.5 ? "💐" : "🌹"}
+          {Math.random() > 0.5 ? "🌸" : "🌺"}
         </motion.div>
       ))}
     </div>
@@ -253,7 +251,7 @@ export default function LoveQuestionnaire() {
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        placeholder="ktik nmamu d sni..."
+                        placeholder="Ketik namamu di sini..."
                         className="text-center border-2 border-pink-200 focus:border-pink-400 p-3 rounded-xl mb-3 font-medium transition-all duration-300 hover:border-pink-300"
                         data-testid="input-name"
                       />
@@ -289,7 +287,7 @@ export default function LoveQuestionnaire() {
                         type="text"
                         value={partner}
                         onChange={(e) => setPartner(e.target.value)}
-                        placeholder="nama pacarmu..."
+                        placeholder="Nama pacarmu..."
                         className="text-center border-2 border-pink-200 focus:border-pink-400 p-3 rounded-xl mb-3 font-medium transition-all duration-300 hover:border-pink-300"
                         data-testid="input-partner"
                       />
@@ -323,7 +321,7 @@ export default function LoveQuestionnaire() {
                       data-testid="button-yes"
                     >
                       <Heart className="w-4 h-4" />
-                      IYA 💖
+                      YA 💖
                     </Button>
                     
                     <motion.div
@@ -383,11 +381,13 @@ export default function LoveQuestionnaire() {
                     </div>
                   </div>
 
-                  <div className="mb-4">
-                    <p className="text-gray-600 text-sm">
-                      Klik icon ❤️ di ujung bawah untuk melanjutkan
-                    </p>
-                  </div>
+                  <Button
+                    onClick={() => setStep(5)}
+                    className="bg-gradient-to-r from-pink-400 to-rose-400 hover:from-pink-500 hover:to-rose-500 text-white px-8 py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 font-medium"
+                    data-testid="button-submit-love"
+                  >
+                    Submit ✨
+                  </Button>
                 </div>
               )}
 
@@ -396,18 +396,21 @@ export default function LoveQuestionnaire() {
                   <div className="mb-8">
                     <div className="text-6xl mb-4">💕</div>
                     <h1 className="text-xl font-semibold text-gray-800 mb-6 leading-relaxed">
-                      aku lebih sayang kamu disetiap heLaan napasku🧎🏻‍♂️
+                      aku lebih sayang kamu disetiap helaan napasku🧎🏻‍♂️
                     </h1>
                     <div className="text-gray-600 text-sm mb-4">
-                      I Love You 💕✨
+                      Kamu adalah segalanya untukku... ✨
                     </div>
                   </div>
 
-                  <div className="mb-4">
-                    <p className="text-gray-600 text-sm">
-                      Klik icon ❤️ di ujung bawah untuk melihat kejutan
-                    </p>
-                  </div>
+                  <Button
+                    onClick={() => setShowEnding(true)}
+                    className="flex items-center justify-center gap-3 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-8 py-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 font-medium mx-auto"
+                    data-testid="button-show-ending"
+                  >
+                    <Heart className="w-6 h-6" />
+                    Klik ini sayang ❤️
+                  </Button>
                 </div>
               )}
 
@@ -471,27 +474,8 @@ export default function LoveQuestionnaire() {
           </motion.div>
         )}
 
-        {/* Footer mini with clickable heart */}
-        <div className="mt-6 text-center text-xs text-white/80">
-          Made with{" "}
-          <motion.span
-            className={`inline-block cursor-pointer transition-all duration-300 ${
-              (step === 4 || step === 5) 
-                ? "text-red-400 text-lg animate-pulse hover:scale-125 hover:text-red-300" 
-                : "text-white/80"
-            }`}
-            onClick={() => {
-              if (step === 4) setStep(5);
-              else if (step === 5) setShowEnding(true);
-            }}
-            whileHover={(step === 4 || step === 5) ? { scale: 1.3 } : {}}
-            whileTap={(step === 4 || step === 5) ? { scale: 1.1 } : {}}
-            data-testid="heart-footer"
-          >
-            ❤️
-          </motion.span>
-          {" | by HRDWNT"}
-        </div>
+        {/* Footer mini */}
+        <div className="mt-6 text-center text-xs text-white/80">Made with ❤️</div>
       </div>
       
       {/* Background subtle patterns */}
