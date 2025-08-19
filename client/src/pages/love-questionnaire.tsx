@@ -190,30 +190,25 @@ export default function LoveQuestionnaire() {
     </div>
   );
 
-  const BackgroundHearts = () => (
-    <div className="fixed inset-0 pointer-events-none z-0">
-      <div className="absolute top-10 left-10 text-pink-200 text-2xl animate-pulse-heart">
-        💕
-      </div>
-      <div
-        className="absolute top-20 right-20 text-rose-200 text-xl animate-pulse-heart"
-        style={{ animationDelay: "0.5s" }}
-      >
-        💖
-      </div>
-      <div
-        className="absolute bottom-20 left-20 text-pink-200 text-lg animate-pulse-heart"
-        style={{ animationDelay: "1s" }}
-      >
-        💗
-      </div>
-      <div
-        className="absolute bottom-10 right-10 text-rose-200 text-2xl animate-pulse-heart"
-        style={{ animationDelay: "1.5s" }}
-      >
-        💓
-      </div>
-    </div>
+  const progress = Math.round(((step + 1) / 6) * 100);
+
+  return (
+    <div className={`min-h-screen text-white relative overflow-hidden bg-gradient-to-br ${ACCENT}`}>
+      <FloatingEmojis count={22} />
+
+      {/* Glow gradient overlay */}
+      <div className="pointer-events-none absolute -inset-40 rounded-full bg-white/10 blur-3xl" />
+
+      {/* Container utama */}
+      <div className="relative z-10 mx-auto max-w-xl px-4 py-8 sm:py-12">
+        {/* Header */}
+        <div className="flex items-center justify-center gap-3 mb-6">
+          <motion.div
+            initial={{ rotate: -12, scale: 0.8 }}
+            animate={{ rotate: 0, scale: 1 }}
+            transition={{ type: "spring", stiffness: 150, damping: 12 }}
+            className="p-3 rounded-2xl bg-white/10 backdrop-blur"
+          >
   );
 
   return (
@@ -411,6 +406,10 @@ export default function LoveQuestionnaire() {
         )}
       </div>
 
+      {/* Footer mini */}
+      <div className="mt-6 text-center text-xs text-white/80">Made with ❤️ </div>
+   
+    
       {/* Background subtle patterns */}
       <div className="absolute inset-0 -z-10 opacity-30 mix-blend-overlay" aria-hidden>
         <svg xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
