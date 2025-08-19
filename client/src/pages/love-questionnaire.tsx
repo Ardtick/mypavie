@@ -1,92 +1,56 @@
-import { useState, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Music, Pause } from "lucide-react";
+import { Heart, Music4, PlayCircle, PauseCircle, Volume2, VolumeX, Sparkles, Send } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
+import { FaHeart } from "react-icons/fa";
 
-// Floating background emojis component
+// Warna aksen utama
+const ACCENT = "from-pink-500 via-fuchsia-500 to-violet-500";
+// ==================================================
+
+// Utility untuk confetti ringan berbasis emoji ❤ ✨
 const FloatingEmojis = ({ count = 18 }: { count?: number }) => {
   const items = useMemo(() => {
-    const emojis = ["❤️", "💖", "💕", "💘", "✨", "💝", "💞", "🌸", "🌺"];
+    const emojis = ["❤", "💖", "💕", "💘", "✨", "💝", "💞"];
     return Array.from({ length: count }, (_, i) => ({
       id: i,
       emoji: emojis[i % emojis.length],
       left: Math.random() * 100,
-      duration: 8 + Math.random() * 8,
-      delay: Math.random() * 5,
-      size: 16 + Math.random() * 16,
+      duration: 8 + Math.random() * 6,
+      delay: Math.random() * 3,
+      size: 18 + Math.random() * 22,
     }));
   }, [count]);
 
   return (
-    <div className="pointer-events-none fixed inset-0 overflow-hidden z-0">
-      {items.map((item) => (
+    <div className="pointer-events-none fixed inset-0 overflow-  hidden">
+      {items.map((it) => (
         <motion.div
-          key={item.id}
+          key={it.id}
           initial={{ y: "100vh", opacity: 0 }}
           animate={{ y: -80, opacity: 1 }}
           transition={{
-            duration: item.duration,
-            delay: item.delay,
+            duration: it.duration,
+            delay: it.delay,
             repeat: Infinity,
             repeatType: "loop"
           }}
           style={{
-            left: `${item.left}%`,
-            fontSize: item.size
+            left: ${it.left}%,
+            fontSize: it.size
           }}
-          className="absolute floating-emoji"
+          className="absolute"
         >
-          {item.emoji}
+          {it.emoji}
         </motion.div>
       ))}
     </div>
   );
 };
 
-// Background decorative hearts
-const BackgroundHearts = () => (
-  <div className="fixed inset-0 pointer-events-none z-0">
-    <div className="absolute top-10 left-10 text-pink-200 text-2xl animate-pulse-heart">💕</div>
-    <div className="absolute top-20 right-20 text-rose-200 text-xl animate-pulse-heart" style={{ animationDelay: "0.5s" }}>💖</div>
-    <div className="absolute bottom-20 left-20 text-pink-200 text-lg animate-pulse-heart" style={{ animationDelay: "1s" }}>💗</div>
-    <div className="absolute bottom-10 right-10 text-rose-200 text-2xl animate-pulse-heart" style={{ animationDelay: "1.5s" }}>💓</div>
-    <div className="absolute top-1/2 left-5 text-pink-100 text-sm animate-pulse-heart" style={{ animationDelay: "2s" }}>🌸</div>
-    <div className="absolute top-1/3 right-5 text-rose-100 text-sm animate-pulse-heart" style={{ animationDelay: "2.5s" }}>🌺</div>
-  </div>
-);
-
-// Music controls component
-const MusicControls = ({ musicPlaying, toggleMusic }: { musicPlaying: boolean; toggleMusic: () => void }) => (
-  <div className="fixed top-5 right-5 z-50">
-    <Button
-      onClick={toggleMusic}
-      size="icon"
-      className="bg-white/80 backdrop-blur-sm rounded-full shadow-lg hover:bg-white/90 transition-all duration-300 hover:scale-105"
-      data-testid="button-toggle-music"
-    >
-      {musicPlaying ? (
-        <Pause className="w-5 h-5 text-pink-500" />
-      ) : (
-        <Music className="w-5 h-5 text-pink-500" />
-      )}
-    </Button>
-  </div>
-);
-
-// Progress bar component
-const ProgressBar = ({ progress }: { progress: number }) => (
-  <div className="fixed top-0 left-0 right-0 z-40 bg-white/10 backdrop-blur-sm">
-    <motion.div
-      className="h-1 bg-gradient-to-r from-pink-500 to-rose-500"
-      initial={{ width: 0 }}
-      animate={{ width: `${progress}%` }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-    />
-  </div>
-);
-
-// Step wrapper with animations
 const StepWrapper = ({ children, keyName }: { children: React.ReactNode; keyName: string }) => (
   <AnimatePresence mode="wait">
     <motion.div
@@ -102,46 +66,6 @@ const StepWrapper = ({ children, keyName }: { children: React.ReactNode; keyName
   </AnimatePresence>
 );
 
-// Confetti animation
-const ConfettiAnimation = ({ show }: { show: boolean }) => {
-  const confettiItems = useMemo(() => {
-    const emojis = ['🎉', '💖', '✨', '🌸', '💕', '🎊'];
-    return Array.from({ length: 20 }, (_, i) => ({
-      id: i,
-      emoji: emojis[Math.floor(Math.random() * emojis.length)],
-      left: Math.random() * 100,
-      delay: i * 100,
-    }));
-  }, []);
-
-  if (!show) return null;
-
-  return (
-    <div className="fixed inset-0 pointer-events-none z-50">
-      {confettiItems.map((item) => (
-        <motion.div
-          key={item.id}
-          className="absolute text-2xl"
-          style={{ left: `${item.left}%`, top: "-50px" }}
-          initial={{ y: -50, opacity: 0, rotate: 0 }}
-          animate={{ 
-            y: window.innerHeight + 50, 
-            opacity: 1, 
-            rotate: Math.random() * 360 
-          }}
-          transition={{
-            duration: 5,
-            delay: item.delay / 1000,
-            ease: "easeOut"
-          }}
-        >
-          {item.emoji}
-        </motion.div>
-      ))}
-    </div>
-  );
-};
-
 export default function LoveQuestionnaire() {
   const [step, setStep] = useState(1);
   const [name, setName] = useState("");
@@ -150,26 +74,54 @@ export default function LoveQuestionnaire() {
   const [noMoves, setNoMoves] = useState(0);
   const [error, setError] = useState("");
   const [loveValue, setLoveValue] = useState(50);
-  const [musicPlaying, setMusicPlaying] = useState(false);
   const [music, setMusic] = useState<HTMLAudioElement | null>(null);
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [showEnding, setShowEnding] = useState(false);
 
-  // Valid names and partners for validation
+  // Tombol "Tidak" menghindar
+  const dodge = () => {
+    const maxX = 160; // pixel
+    const maxY = 120;
+    const nx = (Math.random() * maxX - maxX / 2) | 0;
+    const ny = (Math.random() * maxY - maxY / 2) | 0;
+    setNoPos({ x: nx, y: ny });
+    setNoMoves((c) => c + 1);
+  };
+
+  const progress = Math.round(((step + 1) / 6) * 100);
+
+  return (
+    <div className={min-h-screen text-white relative overflow-hidden bg-gradient-to-br ${ACCENT}}>
+      <FloatingEmojis count={22} />
+
   const validNames = [
-    "pavita", "papita", "pavita rheanne", "papita rheanne",
-    "pavita rheanne alastair", "papita rheanne alastair",
-    "riona", "gienka", "irish", "jolene"
+    "pavita",
+    "papita",
+    "pavita rheanne",
+    "papita rheanne",
+    "pavita rheanne alastair",
+    "papita rheanne alastair",
+    "riona",
+    "gienka",
+    "irish",
+    "jolene",
   ];
 
   const validPartners = [
-    "heru", "heiu", "heru dewanto", "heiu dewanto",
-    "stiven", "stiven cullen", "gohyong", "gohyong hotteok",
-    "kang deni mujaer", "juned"
+    "heru",
+    "heiu",
+    "heru dewanto",
+    "heiu dewanto",
+    "stiven",
+    "stiven cullen",
+    "gohyong",
+    "gohyong hotteok",
+    "kang deni mujaer",
+    "juned",
   ];
 
-  // Initialize background music when reaching step 2
   useEffect(() => {
     if (step === 2 && !music) {
+      // Auto-play romantic background music when reaching step 2
       const audio = new Audio("https://files.catbox.moe/l3gi5l.m4a");
       audio.loop = true;
       audio.volume = 0.3;
@@ -177,34 +129,8 @@ export default function LoveQuestionnaire() {
         console.log("Could not play audio");
       });
       setMusic(audio);
-      setMusicPlaying(true);
     }
   }, [step, music]);
-
-  // Cleanup audio on unmount
-  useEffect(() => {
-    return () => {
-      if (music) {
-        music.pause();
-        music.src = "";
-      }
-    };
-  }, [music]);
-
-  const progress = Math.round(((step) / 5) * 100);
-
-  const toggleMusic = () => {
-    if (music) {
-      if (musicPlaying) {
-        music.pause();
-      } else {
-        music.play().catch(() => {
-          console.log("Could not play audio");
-        });
-      }
-      setMusicPlaying(!musicPlaying);
-    }
-  };
 
   const handleNameSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -234,15 +160,6 @@ export default function LoveQuestionnaire() {
     }
   };
 
-  const dodgeButton = () => {
-    const maxX = 160;
-    const maxY = 120;
-    const nx = (Math.random() * maxX - maxX / 2) | 0;
-    const ny = (Math.random() * maxY - maxY / 2) | 0;
-    setNoPos({ x: nx, y: ny });
-    setNoMoves((c) => c + 1);
-  };
-
   const getLoveMessage = (value: number) => {
     if (value < 30) return "Hmm... bisa lebih sayang lagi 🤔";
     if (value < 60) return "Lumayan sayang nih 😊";
@@ -250,256 +167,275 @@ export default function LoveQuestionnaire() {
     return "Cinta sejati! 💖✨";
   };
 
-  const handleContinue = () => {
-    setStep(5);
-    setShowConfetti(true);
-    setTimeout(() => setShowConfetti(false), 5000);
-  };
+  const Petals = () => (
+    <div className="pointer-events-none fixed inset-0 overflow-hidden z-50">
+      {[...Array(20)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute text-pink-300 text-3xl"
+          initial={{
+            y: -50,
+            x:
+              Math.random() *
+              (typeof window !== "undefined" ? window.innerWidth : 1200),
+            opacity: 0,
+          }}
+          animate={{
+            y: typeof window !== "undefined" ? window.innerHeight + 50 : 800,
+            opacity: 1,
+          }}
+          transition={{
+            duration: 8 + Math.random() * 5,
+            repeat: Infinity,
+            delay: Math.random() * 5,
+          }}
+        >
+          {Math.random() > 0.5 ? "🌸" : "🌺"}
+        </motion.div>
+      ))}
+    </div>
+  );
 
-  const shareResults = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: 'Love Test Results',
-        text: `${name} dan ${partner} memiliki tingkat cinta ${loveValue}%!`,
-        url: window.location.href
-      });
-    } else {
-      const text = `${name} dan ${partner} memiliki tingkat cinta ${loveValue}%!`;
-      navigator.clipboard.writeText(text).then(() => {
-        alert('Hasil telah disalin ke clipboard!');
-      });
-    }
-  };
-
-  const restartQuiz = () => {
-    setStep(1);
-    setName("");
-    setPartner("");
-    setNoPos({ x: 0, y: 0 });
-    setNoMoves(0);
-    setError("");
-    setLoveValue(50);
-    setShowConfetti(false);
-  };
+  const BackgroundHearts = () => (
+    <div className="fixed inset-0 pointer-events-none z-0">
+      <div className="absolute top-10 left-10 text-pink-200 text-2xl animate-pulse-heart">
+        💕
+      </div>
+      <div
+        className="absolute top-20 right-20 text-rose-200 text-xl animate-pulse-heart"
+        style={{ animationDelay: "0.5s" }}
+      >
+        💖
+      </div>
+      <div
+        className="absolute bottom-20 left-20 text-pink-200 text-lg animate-pulse-heart"
+        style={{ animationDelay: "1s" }}
+      >
+        💗
+      </div>
+      <div
+        className="absolute bottom-10 right-10 text-rose-200 text-2xl animate-pulse-heart"
+        style={{ animationDelay: "1.5s" }}
+      >
+        💓
+      </div>
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-100 to-pink-200 text-gray-800 font-sans overflow-x-hidden relative">
-      <FloatingEmojis count={22} />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-rose-100 to-pink-200 text-gray-800 p-4 relative overflow-hidden">
       <BackgroundHearts />
-      <MusicControls musicPlaying={musicPlaying} toggleMusic={toggleMusic} />
-      <ProgressBar progress={progress} />
-      <ConfettiAnimation show={showConfetti} />
 
-      <div className="min-h-screen flex items-center justify-center p-4 relative z-10">
-        <div className="max-w-md w-full bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8 text-center relative">
-          
-          {step === 1 && (
-            <StepWrapper keyName="step1">
-              <div className="mb-6">
-                <div className="text-pink-500 text-4xl mb-4 animate-bounce-gentle">💝</div>
-                <h1 className="text-2xl font-semibold text-gray-800 mb-2">
-                  Sp nmamu?
-                </h1>
-                <p className="text-gray-600 text-sm">msukan dngn bnar</p>
+      <div className="max-w-md w-full bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8 text-center relative z-10">
+        {step === 1 && (
+          <div>
+            <div className="mb-6">
+              <FaHeart className="text-pink-500 text-4xl mb-4 mx-auto" />
+              <h1 className="text-2xl font-semibold text-gray-800 mb-2">
+                Sp nmamu?
+              </h1>
+              <p className="text-gray-600 text-sm">msukan dngn bnar</p>
+            </div>
+
+            <form onSubmit={handleNameSubmit}>
+              <div className="mb-4">
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Ketik namamu di sini..."
+                  className="w-full border-2 border-pink-200 focus:border-pink-400 focus:outline-none p-3 rounded-xl mb-3 text-center font-medium transition-all duration-300 hover:border-pink-300"
+                />
+                {error && <p className="text-red-500 text-sm">{error}</p>}
               </div>
 
-              <form onSubmit={handleNameSubmit} className="space-y-4">
-                <div className="mb-4">
-                  <Input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Ketik namamu di sini..."
-                    className="w-full border-2 border-pink-200 focus:border-pink-400 focus:outline-none p-3 rounded-xl mb-3 text-center font-medium transition-all duration-300 hover:border-pink-300 focus:ring-2 focus:ring-pink-200"
-                    data-testid="input-name"
-                  />
-                  {error && <p className="text-red-500 text-sm" data-testid="text-name-error">{error}</p>}
-                </div>
+              <button
+                type="submit"
+                className="bg-gradient-to-r from-pink-400 to-rose-400 text-white px-8 py-3 rounded-full shadow-lg hover:from-pink-500 hover:to-rose-500 transition-all duration-300 transform hover:scale-105 font-medium"
+              >
+                Neks ➝
+              </button>
+            </form>
+          </div>
+        )}
 
-                <Button
-                  type="submit"
-                  className="btn-primary text-white px-8 py-3 rounded-full shadow-lg font-medium w-full sm:w-auto"
-                  data-testid="button-submit-name"
-                >
-                  Neks ➝
-                </Button>
-              </form>
-            </StepWrapper>
-          )}
+        {step === 2 && (
+          <div>
+            <div className="mb-6">
+              <div className="text-4xl mb-4">😍</div>
+              <h1 className="text-2xl font-semibold text-gray-800 mb-2">
+                {name} pacalna siapa nii?
+              </h1>
+              <p className="text-gray-600 text-sm">
+                sebutkan nama si tamvan n pemberani itu ✨
+              </p>
+            </div>
 
-          {step === 2 && (
-            <StepWrapper keyName="step2">
-              <div className="mb-6">
-                <div className="text-4xl mb-4 animate-bounce-gentle">😍</div>
-                <h1 className="text-2xl font-semibold text-gray-800 mb-2">
-                  {name} pacalna siapa nii?
-                </h1>
-                <p className="text-gray-600 text-sm">
-                  sebutkan nama si tamvan n pemberani itu ✨
-                </p>
+            <form onSubmit={handlePartnerSubmit}>
+              <div className="mb-4">
+                <input
+                  type="text"
+                  value={partner}
+                  onChange={(e) => setPartner(e.target.value)}
+                  placeholder="Nama pacarmu..."
+                  className="w-full border-2 border-pink-200 focus:border-pink-400 focus:outline-none p-3 rounded-xl mb-3 text-center font-medium transition-all duration-300 hover:border-pink-300"
+                />
+                {error && <p className="text-red-500 text-sm">{error}</p>}
               </div>
 
-              <form onSubmit={handlePartnerSubmit} className="space-y-4">
-                <div className="mb-4">
-                  <Input
-                    type="text"
-                    value={partner}
-                    onChange={(e) => setPartner(e.target.value)}
-                    placeholder="Nama pacarmu..."
-                    className="w-full border-2 border-pink-200 focus:border-pink-400 focus:outline-none p-3 rounded-xl mb-3 text-center font-medium transition-all duration-300 hover:border-pink-300 focus:ring-2 focus:ring-pink-200"
-                    data-testid="input-partner"
-                  />
-                  {error && <p className="text-red-500 text-sm" data-testid="text-partner-error">{error}</p>}
-                </div>
+              <button
+                type="submit"
+                className="bg-gradient-to-r from-pink-400 to-rose-400 text-white px-8 py-3 rounded-full shadow-lg hover:from-pink-500 hover:to-rose-500 transition-all duration-300 transform hover:scale-105 font-medium"
+              >
+                Next ➝
+              </button>
+            </form>
+          </div>
+        )}
 
-                <Button
-                  type="submit"
-                  className="btn-primary text-white px-8 py-3 rounded-full shadow-lg font-medium w-full sm:w-auto"
-                  data-testid="button-submit-partner"
+        {step === 3 && (
+          <div>
+            <div className="mb-8">
+              <div className="text-4xl mb-4">❓</div>
+              <h1 className="text-2xl font-semibold text-gray-800 mb-4">
+                {name} sayang {partner} gak?
+              </h1>
+            </div>
+
+            <div className="flex justify-center gap-6">
+              <button
+                onClick={() => setStep(4)}
+                className="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-8 py-3 rounded-full shadow-lg hover:from-pink-600 hover:to-rose-600 transition-all duration-300 transform hover:scale-105 font-medium flex items-center gap-2"
+              >
+                <FaHeart />
+                YA 💖
+               <Button
+                  size="lg"
+                  onClick={() => {
+                    setSayang(true);
+                    setStep(3);
+                  }}
+                  className="rounded-2xl px-6 py-6 text-lg"
                 >
-                  Next ➝
+                  YA 💘
                 </Button>
-              </form>
-            </StepWrapper>
-          )}
-
-          {step === 3 && (
-            <StepWrapper keyName="step3">
-              <div className="mb-8">
-                <div className="text-4xl mb-4 animate-bounce-gentle">❓</div>
-                <h1 className="text-2xl font-semibold text-gray-800 mb-4">
-                  {name} sayang {partner} gak?
-                </h1>
-              </div>
-
-              <div className="flex flex-col sm:flex-row justify-center gap-6 items-center">
-                <Button
-                  onClick={() => setStep(4)}
-                  className="btn-primary text-white px-8 py-3 rounded-full shadow-lg font-medium flex items-center gap-2 hover:scale-105 transition-transform duration-200"
-                  data-testid="button-yes"
-                >
-                  <Heart className="w-5 h-5" fill="currentColor" />
-                  YA 💖
-                </Button>
-
                 <motion.div
                   style={{ translateX: noPos.x, translateY: noPos.y }}
                   transition={{ type: "spring", stiffness: 200, damping: 12 }}
                 >
                   <Button
+                    size="lg"
                     variant="secondary"
-                    className="bg-white/80 hover:bg-white text-gray-900 px-8 py-3 rounded-full shadow-lg font-medium transition-all duration-200 hover:scale-105"
-                    onMouseEnter={dodgeButton}
-                    onTouchStart={dodgeButton}
-                    onClick={dodgeButton}
-                    data-testid="button-no"
+                    className="rounded-2xl px-6 py-6 text-lg bg-white/80 text-gray-900 hover:bg-white"
+                    onMouseEnter={dodge}
+                    onTouchStart={dodge}
+                    onClick={dodge}
                   >
                     TIDAK 🙈
                   </Button>
                 </motion.div>
               </div>
+            </div>
+            {noMoves > 0 && (
+              <p className="text-gray-600 text-sm mt-4">
+                Hehe… tombol "Tidak" suka malu-malu kucing 😆
+              </p>
+            )}
+          </div>
+        )}
 
-              {noMoves > 0 && (
-                <p className="text-gray-600 text-sm mt-4" data-testid="text-dodge-message">
-                  Hehe… tombol "Tidak" suka malu-malu kucing 😆
-                </p>
-              )}
-            </StepWrapper>
-          )}
 
-          {step === 4 && (
-            <StepWrapper keyName="step4">
-              <div className="mb-8">
-                <div className="text-4xl mb-4 animate-bounce-gentle">💓</div>
-                <h1 className="text-2xl font-semibold text-gray-800 mb-6">
-                  Seberapa sayang {name} sama {partner}?
-                </h1>
+        {step === 4 && (
+          <div>
+            <div className="mb-8">
+              <div className="text-4xl mb-4">💓</div>
+              <h1 className="text-2xl font-semibold text-gray-800 mb-6">
+                Seberapa sayang {name} sama {partner}?
+              </h1>
+            </div>
+
+            <div className="mb-8">
+              <div className="relative mb-4">
+                <input
+                  type="range"
+                  min="1"
+                  max="100"
+                  value={loveValue}
+                  onChange={(e) => setLoveValue(parseInt(e.target.value))}
+                  className="w-full h-3 bg-pink-200 rounded-lg appearance-none cursor-pointer love-slider"
+                />
               </div>
 
-              <div className="mb-8">
-                <div className="relative mb-6">
-                  <input
-                    type="range"
-                    min="1"
-                    max="100"
-                    value={loveValue}
-                    onChange={(e) => setLoveValue(parseInt(e.target.value))}
-                    className="love-slider w-full cursor-pointer"
-                    data-testid="slider-love"
-                  />
-                </div>
-
-                <div className="text-center">
-                  <span className="text-4xl font-bold text-pink-500" data-testid="text-love-value">
-                    {loveValue}
-                  </span>
-                  <span className="text-2xl text-pink-400">%</span>
-                  <div className="mt-2 text-gray-600">
-                    <span data-testid="text-love-message">{getLoveMessage(loveValue)}</span>
-                  </div>
+              <div className="text-center">
+                <span className="text-4xl font-bold text-pink-500">
+                  {loveValue}
+                </span>
+                <span className="text-2xl text-pink-400">%</span>
+                <div className="mt-2 text-gray-600">
+                  <span>{getLoveMessage(loveValue)}</span>
                 </div>
               </div>
+            </div>
 
-              <Button
-                onClick={handleContinue}
-                className="btn-primary text-white px-8 py-3 rounded-full shadow-lg font-medium w-full sm:w-auto"
-                data-testid="button-continue"
-              >
-                Lanjut ➝
-              </Button>
-            </StepWrapper>
-          )}
+            <button
+              onClick={() => setStep(5)}
+              className="bg-gradient-to-r from-pink-400 to-rose-400 text-white px-8 py-3 rounded-full shadow-lg hover:from-pink-500 hover:to-rose-500 transition-all duration-300 transform hover:scale-105 font-medium"
+            >
+              Submit ✨
+            </button>
+          </div>
+        )}
 
-          {step === 5 && (
-            <StepWrapper keyName="step5">
-              <div className="mb-6">
-                <div className="text-6xl mb-4 animate-bounce-gentle">🎉</div>
-                <h1 className="text-2xl font-bold text-gray-800 mb-4">
-                  Hasil Test Cinta!
-                </h1>
+        {step === 5 && (
+          <div>
+            <div className="mb-8">
+              <div className="text-6xl mb-4">💕</div>
+              <h1 className="text-xl font-semibold text-gray-800 mb-6 leading-relaxed">
+                aku lebih sayang kamu disetiap helaan napasku🧎🏻‍♂
+              </h1>
+              <div className="text-gray-600 text-sm mb-4">
+                Kamu adalah segalanya untukku... ✨
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowEnding(true)}
+              className="flex items-center justify-center gap-3 bg-gradient-to-r from-red-500 to-pink-500 text-white px-8 py-4 rounded-full shadow-lg hover:from-red-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 font-medium mx-auto animate-pulse-heart"
+            >
+              <FaHeart className="text-2xl" />
+              Klik ini sayang ❤
+            </button>
+          </div>
+        )}
+
+        {showEnding && (
+          <div className="relative">
+            <div className="mb-6">
+              <h1 className="text-3xl font-bold text-gray-800 mb-6 leading-tight">
+                Happy 10th Month Sayang 🤍
+              </h1>
+
+              <img
+                src="https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600"
+                alt="Romantic anniversary celebration"
+                className="rounded-2xl shadow-lg mx-auto mb-6 w-full max-w-sm"
+              />
+
+              <div className="text-gray-600 text-lg mb-4">
+                Terima kasih sudah menjadi bagian terbaik dalam hidupku 💕
               </div>
 
-              <div className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-6 mb-6">
-                <div className="text-lg text-gray-700 mb-4">
-                  <span className="font-semibold text-pink-600" data-testid="text-result-name">{name}</span> dan{" "}
-                  <span className="font-semibold text-pink-600" data-testid="text-result-partner">{partner}</span>
-                </div>
-                
-                <div className="text-5xl font-bold text-pink-500 mb-2">
-                  <span data-testid="text-result-percentage">{loveValue}</span>%
-                </div>
-                
-                <div className="text-xl text-gray-600 mb-4" data-testid="text-final-message">
-                  {getLoveMessage(loveValue)}
-                </div>
-                
-                <div className="text-sm text-gray-500">
-                  Tingkat kompatibilitas kalian sangat tinggi! ✨
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <Button
-                  onClick={shareResults}
-                  className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-8 py-3 rounded-full shadow-lg font-medium w-full hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
-                  data-testid="button-share"
-                >
-                  Share Hasil 📱
-                </Button>
-                
-                <Button
-                  onClick={restartQuiz}
-                  className="btn-primary text-white px-8 py-3 rounded-full shadow-lg font-medium w-full"
-                  data-testid="button-restart"
-                >
-                  Test Lagi 🔄
-                </Button>
-              </div>
-            </StepWrapper>
-          )}
-
-        </div>
+      {/* Background subtle patterns */}
+      <div className="absolute inset-0 -z-10 opacity-30 mix-blend-overlay" aria-hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+          <defs>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
       </div>
-    </div>
-  );
-}
+      </div>
+      );
+      }
