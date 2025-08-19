@@ -11,10 +11,10 @@ import { FaHeart } from "react-icons/fa";
 const ACCENT = "from-pink-500 via-fuchsia-500 to-violet-500";
 // ==================================================
 
-// Utility untuk confetti ringan berbasis emoji ❤ ✨
+// Utility untuk confetti ringan berbasis emoji ❤️ ✨
 const FloatingEmojis = ({ count = 18 }: { count?: number }) => {
   const items = useMemo(() => {
-    const emojis = ["❤", "💖", "💕", "💘", "✨", "💝", "💞"];
+    const emojis = ["❤️", "💖", "💕", "💘", "✨", "💝", "💞"];
     return Array.from({ length: count }, (_, i) => ({
       id: i,
       emoji: emojis[i % emojis.length],
@@ -26,7 +26,7 @@ const FloatingEmojis = ({ count = 18 }: { count?: number }) => {
   }, [count]);
 
   return (
-    <div className="pointer-events-none fixed inset-0 overflow-  hidden">
+    <div className="pointer-events-none fixed inset-0 overflow-hidden">
       {items.map((it) => (
         <motion.div
           key={it.id}
@@ -39,7 +39,7 @@ const FloatingEmojis = ({ count = 18 }: { count?: number }) => {
             repeatType: "loop"
           }}
           style={{
-            left: ${it.left}%,
+            left: `${it.left}%`,
             fontSize: it.size
           }}
           className="absolute"
@@ -86,12 +86,6 @@ export default function LoveQuestionnaire() {
     setNoPos({ x: nx, y: ny });
     setNoMoves((c) => c + 1);
   };
-
-  const progress = Math.round(((step + 1) / 6) * 100);
-
-  return (
-    <div className={min-h-screen text-white relative overflow-hidden bg-gradient-to-br ${ACCENT}}>
-      <FloatingEmojis count={22} />
 
   const validNames = [
     "pavita",
@@ -309,32 +303,21 @@ export default function LoveQuestionnaire() {
               >
                 <FaHeart />
                 YA 💖
-               <Button
-                  size="lg"
-                  onClick={() => {
-                    setSayang(true);
-                    setStep(3);
-                  }}
-                  className="rounded-2xl px-6 py-6 text-lg"
+              </button>
+              
+              <motion.div
+                style={{ translateX: noPos.x, translateY: noPos.y }}
+                transition={{ type: "spring", stiffness: 200, damping: 12 }}
+              >
+                <button
+                  className="bg-gray-300 text-gray-700 px-8 py-3 rounded-full shadow-lg hover:bg-gray-400 transition-all duration-300 transform hover:scale-105 font-medium"
+                  onMouseEnter={dodge}
+                  onTouchStart={dodge}
+                  onClick={dodge}
                 >
-                  YA 💘
-                </Button>
-                <motion.div
-                  style={{ translateX: noPos.x, translateY: noPos.y }}
-                  transition={{ type: "spring", stiffness: 200, damping: 12 }}
-                >
-                  <Button
-                    size="lg"
-                    variant="secondary"
-                    className="rounded-2xl px-6 py-6 text-lg bg-white/80 text-gray-900 hover:bg-white"
-                    onMouseEnter={dodge}
-                    onTouchStart={dodge}
-                    onClick={dodge}
-                  >
-                    TIDAK 🙈
-                  </Button>
-                </motion.div>
-              </div>
+                  TIDAK 🙈
+                </button>
+              </motion.div>
             </div>
             {noMoves > 0 && (
               <p className="text-gray-600 text-sm mt-4">
@@ -343,7 +326,6 @@ export default function LoveQuestionnaire() {
             )}
           </div>
         )}
-
 
         {step === 4 && (
           <div>
@@ -362,7 +344,7 @@ export default function LoveQuestionnaire() {
                   max="100"
                   value={loveValue}
                   onChange={(e) => setLoveValue(parseInt(e.target.value))}
-                  className="w-full h-3 bg-pink-200 rounded-lg appearance-none cursor-pointer love-slider"
+                  className="w-full h-3 bg-pink-200 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
 
@@ -391,7 +373,7 @@ export default function LoveQuestionnaire() {
             <div className="mb-8">
               <div className="text-6xl mb-4">💕</div>
               <h1 className="text-xl font-semibold text-gray-800 mb-6 leading-relaxed">
-                aku lebih sayang kamu disetiap helaan napasku🧎🏻‍♂
+                aku lebih sayang kamu disetiap helaan napasku🧎🏻‍♂️
               </h1>
               <div className="text-gray-600 text-sm mb-4">
                 Kamu adalah segalanya untukku... ✨
@@ -400,10 +382,10 @@ export default function LoveQuestionnaire() {
 
             <button
               onClick={() => setShowEnding(true)}
-              className="flex items-center justify-center gap-3 bg-gradient-to-r from-red-500 to-pink-500 text-white px-8 py-4 rounded-full shadow-lg hover:from-red-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 font-medium mx-auto animate-pulse-heart"
+              className="flex items-center justify-center gap-3 bg-gradient-to-r from-red-500 to-pink-500 text-white px-8 py-4 rounded-full shadow-lg hover:from-red-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 font-medium mx-auto"
             >
               <FaHeart className="text-2xl" />
-              Klik ini sayang ❤
+              Klik ini sayang ❤️
             </button>
           </div>
         )}
@@ -424,6 +406,10 @@ export default function LoveQuestionnaire() {
               <div className="text-gray-600 text-lg mb-4">
                 Terima kasih sudah menjadi bagian terbaik dalam hidupku 💕
               </div>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Background subtle patterns */}
       <div className="absolute inset-0 -z-10 opacity-30 mix-blend-overlay" aria-hidden>
@@ -436,6 +422,6 @@ export default function LoveQuestionnaire() {
           <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
       </div>
-      </div>
-      );
-      }
+    </div>
+  );
+}
